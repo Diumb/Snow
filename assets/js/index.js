@@ -30,11 +30,11 @@ function randomInt(min, max) {
 function snowAnimation(array) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    checkArray(array);
+
     array.forEach(item => {
         drawSnow({ x: item.x, y: ++item.y, size: 3 });
     });
-
-    checkArray(array);
 
     if (settings.isAnimation) {
         requestAnimationFrame(() => snowAnimation(cordArray));
@@ -42,8 +42,8 @@ function snowAnimation(array) {
 }
 
 function createSnow() {
-    let windowWidth = document.documentElement.offsetWidth,
-        randomX = randomInt(0, windowWidth);
+    const windowWidth = document.documentElement.offsetWidth,
+          randomX = randomInt(0, windowWidth);
 
     drawSnow({ x: randomX, y: 0, size: 3 });
 
@@ -76,7 +76,7 @@ function checkKey(key) {
         
         case ("Backspace"):
             endAnimation();
-         break;
+        break;
     }
 } 
 
