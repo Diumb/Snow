@@ -3,3 +3,12 @@
     width: 100%;
     background: #404040;
 }
+
+.snow {
+    width: 100%;
+    height: 100vh;
+}
+
+.snow__canvas {
+    display: block;
+}
