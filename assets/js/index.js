@@ -1,3 +1,9 @@
+// Imports
+
+import { checkMethods } from "./checks.js";
+import { animationMethods } from "./animations.js";
+import { randomMethods } from "./randomInt.js";
+
 // Canvas Variables
 
 const canvas = document.querySelector(".snow__canvas"),
@@ -5,7 +11,7 @@ const canvas = document.querySelector(".snow__canvas"),
 
 // Animation Variables
 
-let cordArray = [];
+let coordinatesList = [];
 
 let settings = {
     isAnimation: true,
@@ -13,88 +19,77 @@ let settings = {
     animation: null,
 };
 
+// Window size Varibles
+
+const windowWidth = document.documentElement.offsetWidth,
+      windowHeight = document.documentElement.offsetTop;
+
+// Key List
+
+let functionsArray = [
+
+    {
+        key: "Enter",
+        func: () => animationMethods.startAnimation(settings, () => snowAnimation(coordinatesList), createSnow),
+    },
+
+    {
+        key: "Backspace",
+        func: () => animationMethods.endAnimation(settings),
+    },
+
+];
+
 // Canvas Settings
 
-canvas.width = document.documentElement.offsetWidth;
-canvas.height = document.documentElement.offsetHeight;
+canvas.width = windowWidth;
+canvas.height = windowHeight;
 
 ctx.fillStyle = "white";
 ctx.strokeStyle = "white";
       
 // Functions
 
-function randomInt(min, max) {
-    return Math.round(min + Math.random() * (max - min));
-}
-
 function snowAnimation(array) {
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    checkArray(array);
+    checkMethods.checkArray(array, windowHeight);
 
     array.forEach(item => {
         drawSnow({ x: item.x, y: ++item.y, size: 3 });
     });
 
     if (settings.isAnimation) {
-        requestAnimationFrame(() => snowAnimation(cordArray));
+        requestAnimationFrame(() => snowAnimation(coordinatesList));
     }
+
 }
 
 function createSnow() {
-    const windowWidth = document.documentElement.offsetWidth,
-          randomX = randomInt(0, windowWidth);
+
+    const randomX = randomMethods.randomInt(0, windowWidth);
 
     drawSnow({ x: randomX, y: 0, size: 3 });
 
     cordArray.push({ x: randomX, y: 0 });
+
 }
 
 function drawSnow(option) {
+
     ctx.beginPath();
     ctx.arc(option.x, option.y, option.size, 0, 360);
     ctx.stroke();
     ctx.fill();
-}
 
-function startAnimation() {
-    settings.animation = setInterval(createSnow, 300);
-    settings.isAnimation = true;
-    snowAnimation(cordArray);
-}
-
-function endAnimation() {
-    clearInterval(settings.animation);
-    settings.isAnimation = false;
-}
-
-function checkKey(key) {
-    switch (key) {
-        case ("Enter"):
-            startAnimation();
-        break;
-        
-        case ("Backspace"):
-            endAnimation();
-        break;
-    }
-} 
-
-function checkArray(array) {
-    const windowHeight = document.documentElement.offsetHeight;
-
-    array.forEach((item, index) => {
-        if (item.y > windowHeight) {
-            array.splice(index, 1);
-        }
-    });
 }
     
 // Event Listeners
 
 document.addEventListener("keydown", event => {
+
     const key = event.code;
-    checkKey(key);
+    checkMethods.checkKey(key, functionsArray);
+    
 });
-
-
