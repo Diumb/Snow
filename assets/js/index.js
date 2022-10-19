@@ -3,6 +3,7 @@
 import { checkMethods } from "./checks.js";
 import { animationMethods } from "./animations.js";
 import { randomMethods } from "./randomInt.js";
+import { canvasMethods } from "./canvas.js";
 
 // Canvas Variables
 
@@ -22,7 +23,7 @@ let settings = {
 // Window size Varibles
 
 const windowWidth = document.documentElement.offsetWidth,
-      windowHeight = document.documentElement.offsetTop;
+      windowHeight = document.documentElement.offsetHeight;
 
 // Key List
 
@@ -36,6 +37,11 @@ let functionsArray = [
     {
         key: "Backspace",
         func: () => animationMethods.endAnimation(settings),
+    },
+
+    {
+        key: "Space",
+        func: () => canvasMethods.clear(coordinatesList, canvas),
     },
 
 ];
@@ -72,7 +78,7 @@ function createSnow() {
 
     drawSnow({ x: randomX, y: 0, size: 3 });
 
-    cordArray.push({ x: randomX, y: 0 });
+    coordinatesList.push({ x: randomX, y: 0 });
 
 }
 
